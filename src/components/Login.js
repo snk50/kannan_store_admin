@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { FiMail, FiLock } from "react-icons/fi"; // Import icons
+import { FiMail, FiLock } from "react-icons/fi";
 
 const schema = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
