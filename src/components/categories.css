@@ -1,0 +1,117 @@
+/* Base styles */
+.container {
+    display: flex;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 100%;
+    background: #f4f4f4;
+    padding: 20px;
+    overflow-y: auto; /* Keep vertical scrolling for the sidebar if needed */
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px; /* Reduced margin to fit layout */
+}
+
+/* Categories Grid - Changed to horizontal flex layout */
+.categories-grid {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping to keep items in one row */
+    gap: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding-bottom: 10px; /* Space for scrollbar */
+    scroll-behavior: smooth; /* Smooth scrolling effect */
+    -webkit-overflow-scrolling: touch; /* Better scrolling on mobile */
+}
+
+/* Category Card */
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+    flex: 0 0 auto; /* Prevent shrinking and ensure consistent width */
+    width: 150px; /* Fixed width for each card, adjust as needed */
+}
+
+.category-card:hover {
+    background: #6200EA;
+    color: white;
+}
+
+.category-card span {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.category-card img {
+    width: 80px; /* Increased size for better visibility */
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Loading States */
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.loader {
+    animation: spin 1s linear infinite;
+    width: 32px;
+    height: 32px;
+    color: #6200EA;
+}
+
+/* Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .categories-grid {
+        gap: 15px; /* Slightly smaller gap for mobile */
+    }
+
+    .category-card {
+        width: 120px; /* Smaller width for mobile */
+    }
+
+    .category-card img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .category-card span {
+        font-size: 14px;
+    }
+}
