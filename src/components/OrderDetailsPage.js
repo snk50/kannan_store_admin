@@ -1,57 +1,113 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../config/firebase";
-import { doc, updateDoc } from "firebase/firestore";
-import "./orderDetails.css";
+import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
+import "./orderDetails.css"; // Import CSS for styling
 
-const OrderDetailsPage = ({ order, onClose, onUpdateOrder }) => {
-    const [status, setStatus] = useState(order?.orderStatus || "Pending");
+const OrderDetailsRoute = () => {
+    const { userId, orderId } = useParams();
+    const navigate = useNavigate();
+    const [order, setOrder] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [status, setStatus] = useState("");
     const [updating, setUpdating] = useState(false);
-    const statusOptions = ["Pending", "Confirmed", "Delivered", "Rejected"];
+    const statusOptions = ["Pending", "Confirmed", "Rejected"];
 
-    if (!order) {
-        return (
-            <div className="order-details-container">
-                <button onClick={onClose} className="close-btn">Close</button>
-                <h2>Order Details</h2>
-                <p>Loading order details...</p>
-            </div>
-        );
-    }
+    useEffect(() => {
+        const fetchOrder = async () => {
+            console.log("Fetching order with userId:", userId, "and orderId:", orderId);
+            try {
+                setLoading(true);
+                const orderRef = doc(db, `users/${userId}/orders`, orderId);
+                console.log("Order reference path:", orderRef.path);
+                const orderSnap = await getDoc(orderRef);
 
-    const handleStatusChange = async (e) => {
-        const newStatus = e.target.value;
-        setStatus(newStatus);
+                if (orderSnap.exists()) {
+                    let orderData = { id: orderSnap.id, ...orderSnap.data(), userId };
+                    console.log("Order data fetched:", orderData);
+                    if (orderData.createdAt instanceof Timestamp) {
+                        orderData.createdAt = orderData.createdAt.toDate();
+                    }
+                    setOrder(orderData);
+                    setStatus(orderData.orderStatus || "Pending"); // Initialize status
+                } else {
+                    console.log("Order document does not exist at path:", orderRef.path);
+                    setError("Order not found.");
+                }
+            } catch (error) {
+                console.error("Error fetching order:", error.message, error.stack);
+                setError("Failed to fetch order details: " + error.message);
+            } finally {
+                setLoading(false);
+                console.log("Loading state set to false, current state:", { loading: false, order, error });
+            }
+        };
+
+        fetchOrder();
+    }, [userId, orderId]);
+
+    const handleClose = () => {
+        navigate("/orders");
+    };
+
+    const handleStatusChange = (e) => {
+        setStatus(e.target.value); // Update local status state
+    };
+
+    const handleUpdateOrder = async () => {
+        if (!order) return;
+
         try {
             setUpdating(true);
-            const orderRef = doc(db, `users/${order.userId}/orders`, order.id);
-            await updateDoc(orderRef, { orderStatus: newStatus });
-            const updatedOrder = { ...order, orderStatus: newStatus };
-            onUpdateOrder(updatedOrder); // Update parent state
+            const orderRef = doc(db, `users/${userId}/orders`, orderId);
+            await updateDoc(orderRef, { orderStatus: status });
+            const updatedOrder = { ...order, orderStatus: status };
+            setOrder(updatedOrder); // Update local state
+            console.log("Order updated in Firestore:", updatedOrder);
+            alert("Order status updated successfully!");
         } catch (error) {
-            console.error("Error updating order status:", error);
-            alert("Failed to update status. Please try again.");
+            console.error("Error updating order status:", error.message, error.stack);
+            setError("Failed to update order status: " + error.message);
             setStatus(order.orderStatus); // Revert on error
         } finally {
             setUpdating(false);
         }
     };
 
-    const handleCallSupport = () => {
-        window.location.href = "tel:9380958581";
+    // Helper function to format price with rupees symbol and space
+    const formatPrice = (amount) => {
+        if (!amount) return "₹ 0.00";
+        // If it already starts with ₹ and has a space, use it as-is
+        if (amount.startsWith("₹ ") && /^\₹\s\d+(\.\d{2})?$/.test(amount)) {
+            return amount;
+        }
+        // Otherwise, parse the numeric part and reformat
+        const numericValue = parseFloat(amount.replace(/[^0-9.]/g, ""));
+        return isNaN(numericValue) ? "₹ 0.00" : `₹ ${numericValue.toFixed(2)}`;
     };
 
-    const handleEmailSupport = () => {
-        const subject = encodeURIComponent("Order Related");
-        const body = encodeURIComponent(`Order ID: ${order.id}`);
-        window.location.href = `mailto:shreekannanstores75@gmail.com?subject=${subject}&body=${body}`;
-    };
+    if (loading) {
+        return <p>Loading order details...</p>;
+    }
+
+    if (error) {
+        return <p className="error">{error}</p>;
+    }
+
+    if (!order) {
+        return <p>No order data available.</p>;
+    }
 
     return (
         <div className="order-details-container">
-            <button onClick={onClose} className="close-btn">Close</button>
             <h2>Order Details</h2>
 
             <p><strong>Order ID:</strong> {order.id}</p>
+            <p><strong>Placed on:</strong> {order.orderDetails?.orderDate || "N/A"}</p>
+            <p><strong>Total Amount:</strong> ₹ {order.totals?.total?.toFixed(2) || "0.00"}</p>
+            <p><strong>Item Count:</strong> {order.items?.length || 0} Items</p>
+
             <div className="form-group">
                 <label><strong>Status:</strong></label>
                 <select
@@ -64,35 +120,23 @@ const OrderDetailsPage = ({ order, onClose, onUpdateOrder }) => {
                         <option key={option} value={option}>{option}</option>
                     ))}
                 </select>
-                {updating && <span className="updating">Updating...</span>}
+                <button
+                    onClick={handleUpdateOrder}
+                    className="update-btn"
+                    disabled={updating}
+                >
+                    {updating ? "Updating..." : "Update"}
+                </button>
             </div>
 
-            <h3>Customer</h3>
-            <p><strong>Name:</strong> {order.customer?.name || "N/A"}</p>
-            <p><strong>Email:</strong> {order.customer?.email || "N/A"}</p>
-            <p><strong>Phone:</strong> {order.customer?.phone || "N/A"}</p>
-
-            <h3>Order Details</h3>
-            <p><strong>Order Date:</strong> {order.orderDetails?.orderDate || "N/A"}</p>
-            <p><strong>Payment Method:</strong> {order.orderDetails?.payment?.method || "N/A"}</p>
-            <p><strong>Payment Status:</strong> {order.orderDetails?.payment?.status || "N/A"}</p>
-            <p><strong>Transaction ID:</strong> {order.orderDetails?.payment?.transactionId || "N/A"}</p>
-            <p><strong>Delivery Date:</strong> {order.orderDetails?.delivery?.deliveryDate || "N/A"}</p>
-            <p><strong>Shipping Method:</strong> {order.orderDetails?.delivery?.shippingMethod || "N/A"}</p>
-            <p><strong>Tracking Number:</strong> {order.orderDetails?.delivery?.trackingNumber || "N/A"}</p>
-            <p><strong>Carrier:</strong> {order.orderDetails?.delivery?.carrier || "N/A"}</p>
-
-            <h3>Delivery Address</h3>
-            <p>{order.deliveryAddress?.address || "No Address"}</p>
-
-            <h3>Items Ordered ({order.items?.length || 0} Items)</h3>
-            <ul>
+            <h3>Items Ordered</h3>
+            <ul className="items-list">
                 {order.items?.length > 0 ? (
                     order.items.map((item, index) => (
-                        <li key={index}>
+                        <li key={index} className="item">
                             <img src={item.cartFoodImage} alt={item.cartFoodName} className="item-img" />
                             <div>
-                                <p>{item.cartFoodName} - ₹{item.cartFoodAmount}</p>
+                                <p>{item.cartFoodName} - {formatPrice(item.cartFoodAmount)}</p>
                                 <p>Quantity: {item.cartQuantity || item.cartFoodQuantity}</p>
                             </div>
                         </li>
@@ -102,19 +146,9 @@ const OrderDetailsPage = ({ order, onClose, onUpdateOrder }) => {
                 )}
             </ul>
 
-            <h3>Totals</h3>
-            <p><strong>Subtotal:</strong> ₹{order.totals?.subtotal?.toFixed(2) || "0.00"}</p>
-            <p><strong>Tax:</strong> ₹{order.totals?.tax?.toFixed(2) || "0.00"}</p>
-            <p><strong>Shipping:</strong> ₹{order.totals?.shipping?.toFixed(2) || "0.00"}</p>
-            <p><strong>Discount:</strong> ₹{order.totals?.discount?.toFixed(2) || "0.00"}</p>
-            <p><strong>Total:</strong> ₹{order.totals?.total?.toFixed(2) || "0.00"}</p>
-
-            <div className="help-container">
-                <button onClick={handleCallSupport} className="help-btn">Call Support</button>
-                <button onClick={handleEmailSupport} className="help-btn">Email Support</button>
-            </div>
+            <button onClick={handleClose} className="close-btn">Close</button>
         </div>
     );
 };
 
-export default OrderDetailsPage;
+export default OrderDetailsRoute;

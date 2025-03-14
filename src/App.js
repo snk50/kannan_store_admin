@@ -5,7 +5,8 @@ import Homepage from "./components/Homepage";
 import CategoriesPage from "./components/CategoriesPage";
 import ProductsPage from "./components/ProductsPage";
 import OrdersPage from "./components/OrdersPage";
-import OrderDetailsPage from "./components/OrderDetailsPage";  // Import the Login component
+import OrderDetailsPage from "./components/OrderDetailsPage";
+import UsersPage from "./components/UsersPage";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/products/:categoryId" element={<ProductsPage />} />
                 <Route path="/users/:userId/orders" element={<OrdersPage />} />
                 <Route path="/orders/:userId/:orderId" element={<OrderDetailsPage />} />
+                <Route path="/users" element={<UsersPage />} /> {/* New route */}
             </Routes>
         </Router>
     );

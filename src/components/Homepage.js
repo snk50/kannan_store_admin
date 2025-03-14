@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
-import {db} from "../config/firebase"; // Firestore instance
-import {collection, getDocs} from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { db } from "../config/firebase";
+import { collection, getDocs } from "firebase/firestore";
 import "./home.css";
 
 const HomePage = () => {
     const navigate = useNavigate();
     const [userId, setUserId] = useState("");
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -24,8 +25,17 @@ const HomePage = () => {
         fetchUsers();
     }, []);
 
-    const handleLogout = () => {
+    const handleLogoutClick = () => {
+        setShowLogoutModal(true); // Show the modal
+    };
+
+    const confirmLogout = () => {
+        setShowLogoutModal(false);
         navigate("/");
+    };
+
+    const cancelLogout = () => {
+        setShowLogoutModal(false);
     };
 
     return (
@@ -36,18 +46,31 @@ const HomePage = () => {
                     <li onClick={() => navigate("/categories")}>Categories</li>
                     <li
                         onClick={() => userId && navigate(`/users/${userId}/orders`)}
-                        className={userId ? "" : "disabled"} // Disable if userId is empty
+                        className={userId ? "" : "disabled"}
                     >
                         Orders
                     </li>
-                    <li>Users</li>
-                    <li onClick={handleLogout} className="logout">Logout</li>
+                    <li onClick={() => navigate("/users")}>Users</li>
+                    <li onClick={handleLogoutClick} className="logout">Logout</li>
                 </ul>
             </nav>
             <div className="content">
                 <h1>Welcome to the Dashboard</h1>
                 <p>Manage your store efficiently.</p>
             </div>
+
+            {showLogoutModal && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <h3>Confirm Logout</h3>
+                        <p>Are you sure you want to logout?</p>
+                        <div className="modal-buttons">
+                            <button onClick={confirmLogout} className="confirm-btn">Yes</button>
+                            <button onClick={cancelLogout} className="cancel-btn">No</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

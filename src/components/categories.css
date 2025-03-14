@@ -10,23 +10,23 @@
     width: 100%;
     background: #f4f4f4;
     padding: 20px;
-    overflow-y: auto; /* Keep vertical scrolling for the sidebar if needed */
+    overflow-y: auto;
 }
 
 .sidebar h2 {
     text-align: center;
-    margin-bottom: 20px; /* Reduced margin to fit layout */
+    margin-bottom: 20px;
 }
 
-/* Categories Grid - Changed to horizontal flex layout */
+/* Categories Grid */
 .categories-grid {
     display: flex;
-    flex-wrap: nowrap; /* Prevent wrapping to keep items in one row */
+    flex-wrap: nowrap;
     gap: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    padding-bottom: 10px; /* Space for scrollbar */
-    scroll-behavior: smooth; /* Smooth scrolling effect */
-    -webkit-overflow-scrolling: touch; /* Better scrolling on mobile */
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Category Card */
@@ -37,16 +37,20 @@
     padding: 10px;
     background: white;
     border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-    text-align: center;
-    flex: 0 0 auto; /* Prevent shrinking and ensure consistent width */
-    width: 150px; /* Fixed width for each card, adjust as needed */
+    flex: 0 0 auto;
+    width: 150px;
 }
 
-.category-card:hover {
+.category-content {
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.category-content:hover {
     background: #6200EA;
     color: white;
+    border-radius: 8px 8px 0 0;
 }
 
 .category-card span {
@@ -56,10 +60,143 @@
 }
 
 .category-card img {
-    width: 80px; /* Increased size for better visibility */
+    width: 80px;
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.category-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.update-btn {
+    background: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.update-btn:hover {
+    background: #0056b3;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
+
+/* Add Category Button */
+.add-category-button {
+    background: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.add-category-button:hover {
+    background: #218838;
+}
+
+/* Modal dialog styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    border: none;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.btn-submit {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-submit:hover {
+    background-color: #218838;
 }
 
 /* Loading States */
@@ -99,11 +236,11 @@
     }
 
     .categories-grid {
-        gap: 15px; /* Slightly smaller gap for mobile */
+        gap: 15px;
     }
 
     .category-card {
-        width: 120px; /* Smaller width for mobile */
+        width: 120px;
     }
 
     .category-card img {
