@@ -13,7 +13,7 @@ const UsersPage = () => {
     const [editingUser, setEditingUser] = useState(null); // Track user being edited
     const navigate = useNavigate();
 
-    useEffect(() => {
+    useEffect(() => { 
         const fetchUsers = async () => {
             try {
                 setLoading(true);
@@ -46,8 +46,9 @@ const UsersPage = () => {
     }, [search, users]);
 
     const handleBack = () => {
-        navigate("/home");
+        navigate(-1);  // This moves one step back in browser history
     };
+    
 
     const handleEdit = (user) => {
         setEditingUser({ ...user }); // Copy user data to edit
@@ -107,6 +108,8 @@ const UsersPage = () => {
     return (
         <div className="users-container">
             <h2>All Users</h2>
+            <button onClick={handleBack} className="back-btn home-btn">Home</button>
+
             <input
                 type="text"
                 placeholder="Search by phone number..."
@@ -203,8 +206,7 @@ const UsersPage = () => {
             ) : (
                 <p>No users found. {search ? "Try adjusting your search." : ""}</p>
             )}
-            <button onClick={handleBack} className="back-btn">Back to Dashboard</button>
-        </div>
+</div>
     );
 };
 

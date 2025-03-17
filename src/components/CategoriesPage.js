@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { db } from "../config/firebase";
 import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import "./categories.css";
+import "./categories.css"; 
 
 const CategoriesPage = () => {
     const [categories, setCategories] = useState([]);
@@ -157,6 +157,17 @@ const CategoriesPage = () => {
                 >
                     Add Category
                 </button>
+
+
+                <button
+    onClick={() => window.location.href = '/home'}  // Change '/home' to your actual home route
+    className="dashboard-button"
+>
+    Home
+</button>
+
+
+
                 {loading ? (
                     <div className="loader-container">
                         <Loader2 className="loader" />
@@ -185,6 +196,18 @@ const CategoriesPage = () => {
                                     >
                                         Delete
                                     </button>
+
+
+                                    <button
+                                         onClick={() => handleCategoryClick(category.id, category.name)}
+                                            className="view-btn"
+                                     >
+                                            View
+                                        </button>
+
+
+
+                                     
                                 </div>
                             </div>
                         ))}
@@ -194,53 +217,60 @@ const CategoriesPage = () => {
 
             {/* Add Category Dialog */}
             {showAddDialog && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <div className="modal-header">Add New Category</div>
-                        <form onSubmit={handleAddCategory}>
-                            <div className="form-group">
-                                <label className="form-label">Category Name *</label>
-                                <input
-                                    type="text"
-                                    value={newCategory.name}
-                                    onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
-                                    className="form-input"
-                                    placeholder="Category Name"
-                                />
-                                {errors.name && <span className="text-red-500 text-sm">{errors.name}</span>}
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Photo URL *</label>
-                                <input
-                                    type="text"
-                                    value={newCategory.photoUrl}
-                                    onChange={(e) => setNewCategory({ ...newCategory, photoUrl: e.target.value })}
-                                    className="form-input"
-                                    placeholder="Photo URL"
-                                />
-                                {errors.photoUrl && <span className="text-red-500 text-sm">{errors.photoUrl}</span>}
-                            </div>
-                            <div className="form-actions">
-                                <button
-                                    type="button"
-                                    onClick={handleCancel}
-                                    className="btn btn-cancel"
-                                    disabled={adding}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="btn btn-submit"
-                                    disabled={adding}
-                                >
-                                    {adding ? "Adding..." : "Add Category"}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+    <div className="modal-overlay">
+        <div className="modal-content">
+            <div className="modal-header">Add New Category</div>
+            <form onSubmit={handleAddCategory}>
+                {/* Category Name Field */}
+                <div className="form-group">
+                    <label className="form-label">Category Name *</label>
+                    <input
+                        type="text"
+                        value={newCategory?.name || ""}
+                        onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
+                        className="form-input"
+                        placeholder="Category Name"
+                        required
+                    />
+                    {errors?.name && <span className="text-red-500 text-sm">{errors.name}</span>}
                 </div>
-            )}
+
+                {/* Photo URL Field */}
+                <div className="form-group">
+                    <label className="form-label">Photo URL *</label>
+                    <input
+                        type="text"
+                        value={newCategory?.photoUrl || ""}
+                        onChange={(e) => setNewCategory({ ...newCategory, photoUrl: e.target.value })}
+                        className="form-input"
+                        placeholder="Photo URL"
+                        required
+                    />
+                    {errors?.photoUrl && <span className="text-red-500 text-sm">{errors.photoUrl}</span>}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="form-actions">
+                    <button
+                        type="button"
+                        onClick={handleCancel}
+                        className="btn btn-cancel"
+                        disabled={adding}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        className="btn btn-submit"
+                        disabled={adding}
+                    >
+                        {adding ? "Adding..." : "Add Category"}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+)}
 
             {/* Update Category Dialog */}
             {showUpdateDialog && editingCategory && (

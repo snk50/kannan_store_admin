@@ -13,7 +13,7 @@ const OrderDetailsRoute = () => {
     const [status, setStatus] = useState("");
     const [updating, setUpdating] = useState(false);
     const statusOptions = ["Pending", "Confirmed", "Rejected"];
-
+ 
     useEffect(() => {
         const fetchOrder = async () => {
             console.log("Fetching order with userId:", userId, "and orderId:", orderId);
@@ -132,7 +132,7 @@ const OrderDetailsRoute = () => {
             <h3>Items Ordered</h3>
             <ul className="items-list">
                 {order.items?.length > 0 ? (
-                    order.items.map((item, index) => (
+                    order.items.map((item, index) => ( 
                         <li key={index} className="item">
                             <img src={item.cartFoodImage} alt={item.cartFoodName} className="item-img" />
                             <div>
@@ -146,7 +146,10 @@ const OrderDetailsRoute = () => {
                 )}
             </ul>
 
-            <button onClick={handleClose} className="close-btn">Close</button>
+            <button onClick={() => window.history.back()} className="close-btn">
+    Close
+</button>
+
         </div>
     );
 };

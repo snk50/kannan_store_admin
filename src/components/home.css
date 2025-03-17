@@ -3,25 +3,42 @@
 }
 
 .navbar {
-    background: #007bff;
-    color: white;
-    padding: 15px 20px;
+    position: fixed;  /* Keeps navbar fixed at the top */
+    top: 0;  /* Align to the top */
+    left: 0;
+    width: 100vw;  /* Full width */
+    height: 100px;
+    background: linear-gradient(135deg, #33d040, #d8ea4e);
+    color: rgb(0, 0, 0);
     display: flex;
-    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
 }
 
 .navbar ul {
-    list-style: none;
     display: flex;
-    gap: 20px;
+    list-style: none;
     padding: 0;
     margin: 0;
+    width: 100%;  /* Full width */
 }
+
+.navbar ul li {
+    padding: 10px 35px;
+    cursor: pointer;
+}
+
+.navbar .logout {
+    margin-left: auto;  /* Pushes Logout to the right */
+    padding-right: 20px; /* Adds space from the right */
+}
+
 
 .navbar li {
     cursor: pointer;
     font-size: 18px;
-    padding: 8px 12px;
+    padding: 8px 10px;
     border-radius: 5px;
 }
 
@@ -30,16 +47,58 @@
 }
 
 .logout {
-    background: red;
-    padding: 8px 12px;
-    border-radius: 5px;
+    background: linear-gradient(135deg, #1cdb2c, #764ba2);
+    padding: 8px 5px;
+    border-radius: 7px;
+    margin-left: auto;  /* Push to the right */
+    margin-right: 50px; /* Move a little left */
 }
+
 
 .logout:hover {
     background: darkred;
 }
 
 .content {
-    text-align: center;
-    margin-top: 50px;
+    margin-top: 120px; /* Adjust space below navbar */
+    padding: 20px;
+    text-align: center; /* Centers heading and content */
+}
+
+.para {
+    margin-top:0%; /* Adjust if needed */
+    margin-left: 300px; /* Pushes the element to the right */
+    padding-right: 0px; /* Adjust spacing from the right */
+    display: block; /* Ensures it takes up available space */
+    text-align: right; /* Aligns text to the right */
+    width: fit-content; /* Only takes up as much space as needed */
+}
+
+
+/* Image Slider */
+.slider-container {
+    width: 100%; /* Increased width */
+    max-width: 1000px; /* Allow larger images */
+    height: 500px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px auto; /* Adds spacing below heading */
+}
+
+
+.slider-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.modal{
+    background: white;
+    padding-bottom: 5px;
 }

@@ -14,7 +14,7 @@ const OrdersPage = () => {
     useEffect(() => {
         const fetchAllOrders = async () => {
             try {
-                setLoading(true);
+                setLoading(true);  
                 setError("");
 
                 const ordersRef = collectionGroup(db, "orders");
@@ -119,6 +119,15 @@ const OrdersPage = () => {
     return (
         <div className="orders-container">
             <h2>All Orders</h2>
+
+            <button
+    onClick={() => window.location.href = '/home'}  // Change '/home' to your actual home route
+    className="dashboard-button1"
+>
+    Home
+</button>
+
+
             <input
                 type="text"
                 placeholder="Search orders by name, ID, or status..."

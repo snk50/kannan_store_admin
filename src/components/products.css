@@ -1,28 +1,89 @@
 .products-container {
-    padding: 20px;
-    max-width: 100%;
+    width: 1400px;  /* Set width */
+    height: 900px; /* Set height */
     margin: 0 auto;
+    background: #28a745;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.category-title {
+    position: absolute;  /* Position it precisely */
+    top: 20px;  /* Distance from the top */
+    left: 50%;  /* Move to the center */
+    transform: translateX(-50%);  /* Ensure it's fully centered */
+    
+    width: auto;  /* Allow it to take up needed space */
+    max-width: 90%;  /* Ensures it doesn't stretch too much */
+    
+    text-align: center;  /* Centers text */
+    white-space: normal;  /* Allows text to wrap */
+    overflow: visible;  /* Ensures full visibility */
+    text-overflow: unset;  /* Prevents truncation */
+    word-break: break-word;  /* Breaks long words properly */
+}
+
+.dashboard-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    width: 180px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+    transition: 0.3s;
+    margin-right: auto; /* Pushes "Dashboard" to the right */
+
+}
+
+
+
+.button-container {
+    display: flex;
+    justify-content: center;  
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;  /* Adjust width to fit content */
+}
+
+.button-container button {
+    font-size: 14px;  /* Makes text smaller */
+    min-width: 100px;  /* Ensures a reasonable button size */
+}
+
+
+.items-wrapper {
+    max-height: 80vh; /* Ensures scroll only happens within this area */
+    overflow-y: auto; /* Enables only vertical scrolling */
+    margin-top: 200px; /* Space between heading & grid */
+    padding-top: 10px;
+    width: 100%; /* Full width of the screen */
 }
 
 .items-grid {
-    display: flex; /* Switch to flexbox for horizontal layout */
-    flex-wrap: nowrap; /* Prevent wrapping to keep items in a single row */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 cards in a row */
     gap: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    padding-bottom: 10px; /* Add some space for scrollbar */
-    scroll-behavior: smooth; /* Smooth scrolling */
-    -webkit-overflow-scrolling: touch; /* Better scrolling on mobile */
+    width: 90vw; /* Make the container wider */
+    max-width: 1400px; /* Prevents it from being too stretched */
+    margin: 0 auto; /* Centers the grid */
 }
 
 .item-card {
     background: white;
-    padding: 15px;
+    padding: 12px;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: 0.3s;
-    flex: 0 0 auto; /* Prevent shrinking and ensure consistent width */
-    width: 200px; /* Fixed width for each item, adjust as needed */
+    
+    width: 100%; /* Takes full column width */
+    max-width: 250px; /* Keeps card size fixed */
+    
+    margin: 0 auto; /* Centers cards horizontally */
 }
 
 .item-card:hover {
@@ -57,7 +118,7 @@
     animation: spin 1s linear infinite;
     width: 32px;
     height: 32px;
-    color: #6200EA;
+    color: #acea00;
 }
 
 @keyframes spin {

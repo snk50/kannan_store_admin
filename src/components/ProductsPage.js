@@ -187,7 +187,7 @@ const ProductsPage = () => {
         }
 
         try {
-            setAdding(true)
+            setAdding(true) 
             const itemsDetailsRef = doc(
                 db,
                 "products",
@@ -273,59 +273,86 @@ const ProductsPage = () => {
 
     return (
         <div className="products-container">
-            <h1 className="text-3xl font-bold mb-8">{categoryName}</h1>
-            <button
-                onClick={handleAddProductClick}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition mb-6"
-            >
-                Add Product
-            </button>
+        <h1 className="category-title text-3xl font-bold mb-8">{categoryName}</h1>
+        <div className="button-container">
+    <button
+        onClick={handleAddProductClick}
+        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition mb-6"
+    >
+        Add Product
+    </button>
 
-            {loading ? (
-                <div className="loader-container">
-                    <Loader2 className="loader" />
-                </div>
-            ) : (
-                <div className="items-grid">
-                    {products.length > 0 ? (
-                        products.map((product) => (
-                            <div key={`${product.id}-${product.itemKey}`} className="item-card">
-                                {product.photoUrl && (
-                                    <img src={product.photoUrl || "/placeholder.svg"} alt={product.name} className="item-card-img" />
-                                )}
-                                <h3>{product.name}</h3>
-                                <p>{product.description || "No description available"}</p>
-                                <div className="flex justify-between items-center text-sm">
-                                    <span className="font-bold">${Number.parseFloat(product.price).toFixed(2)}</span>
-                                    <span className="text-gray-500">Stock: {product.totalStocks}</span>
-                                </div>
-                                {product.discount > 0 && (
-                                    <div className="text-green-600 text-sm mt-1">Discount: {product.discount}%</div>
-                                )}
-                                {product.cartQuantity > 0 && (
-                                    <div className="text-blue-600 text-sm mt-1">In Cart: {product.cartQuantity}</div>
-                                )}
-                                <div className="flex mt-4 gap-2">
-                                    <button
-                                        onClick={() => handleEdit(product)}
-                                        className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
-                                    >
-                                        Update
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(product.id, product.itemKey)}
-                                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
+    <button
+    onClick={() => window.location.href = '/home'}  // Change '/home' to your actual home route
+    className="dashboard-button"
+>
+    Dashboard
+</button>
+</div>
+
+
+{loading ? (
+    <div className="loader-container">
+        <Loader2 className="loader" />
+    </div>
+) : (
+    <div className="items-wrapper">
+        <div className="items-grid">
+            {products.length > 0 ? (
+                products.map((product) => (
+                    <div key={`${product.id}-${product.itemKey}`} className="item-card">
+                        {product.photoUrl && (
+                            <img 
+                                src={product.photoUrl || "/placeholder.svg"} 
+                                alt={product.name} 
+                                className="item-card-img" 
+                            />
+                        )}
+                        <h3>{product.name}</h3>
+                        <p>{product.description || "No description available"}</p>
+                        <div className="flex justify-between items-center text-sm">
+                            <span className="font-bold">
+                                ₹{Number.parseFloat(product.price).toFixed(2)}
+                            </span>
+                            <span className="text-gray-500">
+                                Stock: {product.totalStocks}
+                            </span>
+                        </div>
+                        {product.discount > 0 && (
+                            <div className="text-green-600 text-sm mt-1">
+                                Discount: {product.discount}%
                             </div>
-                        ))
-                    ) : (
-                        <div className="no-items">No products found in this category.</div>
-                    )}
+                        )}
+                        {product.cartQuantity > 0 && (
+                            <div className="text-blue-600 text-sm mt-1">
+                                In Cart: {product.cartQuantity}
+                            </div>
+                        )}
+                        <div className="flex mt-6 gap-8">
+                            <button
+                                onClick={() => handleEdit(product)}
+                                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
+                            >
+                                Update
+                            </button>
+                            <button
+                                onClick={() => handleDelete(product.id, product.itemKey)}
+                                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                ))
+            ) : (
+                <div className="no-items">
+                    No products found in this category.
                 </div>
             )}
+        </div>
+    </div>
+)}
+
 
             {/* Update Dialog */}
             {showUpdateDialog && editingItem && (
@@ -368,7 +395,7 @@ const ProductsPage = () => {
                             <div className="form-row">
                                 <div className="form-col">
                                     <div className="form-group">
-                                        <label className="form-label">Price ($)</label>
+                                        <label className="form-label">Price (₹)</label>
                                         <input
                                             type="number"
                                             value={editingItem.price || 0}
@@ -517,7 +544,7 @@ const ProductsPage = () => {
                             <div className="form-row">
                                 <div className="form-col">
                                     <div className="form-group">
-                                        <label className="form-label">Price ($) *</label>
+                                        <label className="form-label">Price (₹) *</label>
                                         <input
                                             type="number"
                                             value={newProduct.price}

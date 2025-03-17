@@ -1,5 +1,25 @@
+.home-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #1cdb2c, #764ba2);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.home-btn:hover {
+    background: #0056b3;
+}
+
+
+
+/* Container */
 .users-container {
-    padding: 20px;
+    padding: 100px 20px 20px 20px; /* Increased top padding */
     font-family: Arial, sans-serif;
     max-width: 800px;
     margin: 0 auto;
@@ -9,34 +29,49 @@
     gap: 20px;
 }
 
+/* Heading */
 h2 {
     margin: 0 0 10px 0;
+    text-align: center; /* Centers the text */
 }
 
+/* Search Input */
 .search-input {
     width: 100%;
     max-width: 400px;
     padding: 10px;
-    margin: 0 0 20px 0;
+    margin: 0 auto 20px auto; /* Centers horizontally */
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
     box-sizing: border-box;
+    display: block; /* Ensures proper centering */
 }
 
+
+/* User List Grid */
 .users-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;  /* Change grid to flex for better control */
+    flex-wrap: wrap; /* Allows wrapping if there are multiple users */
     gap: 20px;
-    flex-grow: 1;
+    flex-grow: 2;
+    max-height: 500px; /* Set max height */
+    overflow-y: auto; /* Enable scrolling */
+    justify-content: center; /* Centers items when fewer results */
+
 }
 
+
+/* Individual User Item */
 .user-item {
     background: #fff;
-    padding: 15px;
+    padding: 20px; /* Slightly increased padding for better spacing */
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-height: 150px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Slightly deeper shadow for better visibility */
+    min-height: 180px; /* Slightly increased height */
+    width: 100%; /* Ensures the card takes full available space */
+    max-width: 400px; /* Prevents the card from being too wide */
+    margin: auto; /* Centers items properly */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -47,6 +82,7 @@ h2 {
     word-wrap: break-word;
 }
 
+/* Edit Form */
 .edit-form {
     display: flex;
     flex-direction: column;
@@ -66,12 +102,15 @@ h2 {
     border-radius: 4px;
 }
 
-.action-buttons, .form-buttons {
+/* Buttons - General */
+.action-buttons, 
+.form-buttons {
     display: flex;
     gap: 10px;
     margin-top: 10px;
 }
 
+/* Edit Button */
 .edit-btn {
     background: #007bff;
     color: white;
@@ -85,6 +124,7 @@ h2 {
     background: #0056b3;
 }
 
+/* Delete Button */
 .delete-btn {
     background: #dc3545;
     color: white;
@@ -98,6 +138,7 @@ h2 {
     background: #c82333;
 }
 
+/* Save Button */
 .save-btn {
     background: #28a745;
     color: white;
@@ -111,6 +152,7 @@ h2 {
     background: #218838;
 }
 
+/* Cancel Button */
 .cancel-btn {
     background: #6c757d;
     color: white;
@@ -124,13 +166,15 @@ h2 {
     background: #5a6268;
 }
 
+/* Error Message */
 .error {
     color: red;
     text-align: center;
 }
 
+/* Back Button */
 .back-btn {
-    background: #007bff;
+    background: linear-gradient(135deg, #1cdb2c, #764ba2);
     color: white;
     padding: 10px 20px;
     border: none;

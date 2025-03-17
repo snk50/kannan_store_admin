@@ -2,7 +2,7 @@
 
 body {
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #8de67f, #daea62);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,7 +65,7 @@ body {
 button {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #1cdb2c, #764ba2);
     border: none;
     border-radius: 8px;
     color: white;

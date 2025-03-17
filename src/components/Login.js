@@ -7,6 +7,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { FiMail, FiLock } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
+import { useEffect } from "react";
+
 
 const schema = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
@@ -27,12 +29,33 @@ const Login = () => {
         setLoading(true);
         try {
             await signInWithEmailAndPassword(auth, data.email, data.password);
-            navigate("/home"); // Redirect to HomePage
+            navigate("/home", { replace: true }); // Replace history entry
         } catch (error) {
             setErrorMessage("Invalid email or password. Please try again.");
         }
         setLoading(false);
     };
+
+
+
+    useEffect(() => {
+        const disableBack = () => {
+            window.history.pushState(null, "", window.location.href);
+        };
+    
+        disableBack(); // Push new history state
+    
+        window.addEventListener("popstate", () => {
+            window.history.pushState(null, "", window.location.href);
+        });
+    
+        return () => {
+            window.removeEventListener("popstate", disableBack);
+        };
+    }, []);
+    
+    
+
 
     return (
         <div className="container">
